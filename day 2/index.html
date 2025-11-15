@@ -249,7 +249,6 @@ for (let i = 0; i < 25; i++) {
   });
 }
 
-// animacja ruchu kulek
 function moveBalls() {
   balls.forEach(b => {
     b.x += b.dx;
@@ -274,14 +273,12 @@ playBtn.addEventListener("click", () => {
   soundStart.play();
   claw.classList.add("animate");
 
-  // claw schodzi w dół i "łapie" kulkę
   setTimeout(() => {
     const randBall = balls[Math.floor(Math.random() * balls.length)];
     const randMsg = messages[Math.floor(Math.random() * messages.length)];
     const clawX = claw.offsetLeft - 15;
     const clawY = 220;
 
-    // zatrzymanie kulki i jej przeniesienie do claw
     randBall.el.style.left = clawX + "px";
     randBall.el.style.top = clawY + "px";
     randBall.el.style.transition = "all 2s ease-in-out";
@@ -312,3 +309,4 @@ playBtn.addEventListener("click", () => {
 
 </body>
 </html>
+
