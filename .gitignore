@@ -1,0 +1,17 @@
+# System
+.DS_Store
+Thumbs.db
+
+# IDE / edytory
+.vscode/
+.idea/
+
+# Node / npm (jeśli w przyszłości użyjesz)
+node_modules/
+
+# Pliki tymczasowe
+*.log
+*.tmp
+
+# Obrazy tymczasowe
+/assets/temp/
