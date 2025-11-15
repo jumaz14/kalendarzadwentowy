@@ -38,8 +38,7 @@
     display: none;
     max-width: 350px;
   }
-
-  /* animacja pęknięcia */
+  
   .cracked {
     animation: crack 0.5s forwards;
   }
@@ -79,15 +78,12 @@
   ];
 
   cookie.addEventListener('click', () => {
-    // reset animacji, żeby za każdym razem zadziałała
     cookie.classList.remove('cracked');
-    void cookie.offsetWidth; // wymusza reflow
+    void cookie.offsetWidth; 
     cookie.classList.add('cracked');
 
-    // losujemy wróżbę
     const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
 
-    // po animacji pokazujemy wróżbę
     setTimeout(() => {
       fortuneText.textContent = randomFortune;
       fortuneText.style.display = 'block';
@@ -97,3 +93,4 @@
 
 </body>
 </html>
+
