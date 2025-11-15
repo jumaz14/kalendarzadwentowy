@@ -13,7 +13,6 @@
     overflow: hidden;
   }
 
-  /* --- Pole z instrukcją --- */
   .intro {
     position: absolute;
     top: 50%;
@@ -32,10 +31,10 @@
   }
 
   .intro-title {
-    font-weight: 700;     /* pogrubienie */
-    font-size: 20px;      /* większa czcionka */
-    display: block;       /* żeby miało własny wiersz */
-    margin-bottom: 10px;  /* odstęp od reszty tekstu */
+    font-weight: 700;
+    font-size: 20px;
+    display: block; 
+    margin-bottom: 10px;
   }
 
   .intro button {
@@ -54,7 +53,6 @@
     transform: scale(1.05);
   }
 
-  /* --- Dymki czatu --- */
   .bubble {
     position: absolute;
     width: 200px;
@@ -128,7 +126,6 @@
 </head>
 <body>
 
-<!-- --- Pole z instrukcją --- -->
 <div class="intro" id="intro">
   <p><span class="intro-title">❤️ Moje ulubione powiadomienia ❤️</span><br>
   Zawsze jak widzę, że napisałeś, mam okropnie dużego banana na twarzy 🫶🏼 <br>
@@ -137,7 +134,6 @@
   <button id="startBtn">Rozpocznij</button>
 </div>
 
-<!-- --- Dymki czatu --- -->
 <div class="bubble" style="top: 5%; left: 15%;" data-img="wiad1.jpg"></div>
 <div class="bubble" style="top: 28%; left: 32%;" data-img="wiad2.jpg"></div>
 <div class="bubble" style="top: 7%; left: 53%;" data-img="wiad3.jpg"></div>
@@ -155,16 +151,13 @@
   const startBtn = document.getElementById('startBtn');
   const bubbles = document.querySelectorAll('.bubble');
 
-  // początkowo ukryj bąbelki
   bubbles.forEach(b => b.style.display = 'none');
 
-  // po kliknięciu "Rozpocznij"
   startBtn.addEventListener('click', () => {
     intro.style.display = 'none';
     bubbles.forEach(b => b.style.display = 'flex');
   });
 
-  // logika odsłaniania wiadomości
   bubbles.forEach(bubble => {
     bubble.addEventListener('click', () => {
       if (!bubble.classList.contains('revealed')) {
@@ -182,3 +175,4 @@
 
 </body>
 </html>
+
