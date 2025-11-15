@@ -95,7 +95,6 @@ const quizData = [
       "Mateusz Morawiecki.",
       "Kuba Wojewódzki."
     ],
-    /* prawidłowa odpowiedź: Mateusz Morawiecki (index 1) */
     correct: 1
   },
   {
@@ -105,7 +104,6 @@ const quizData = [
       "Najszybciej rozwiązane sudoku.",
       "Najdłuższe stanie na rękach."
     ],
-    /* prawidłowa: skakanka (index 0) */
     correct: 0
   },
   {
@@ -124,7 +122,6 @@ const quizData = [
       "13 posterunek.",
       "Klan."
     ],
-    /* prawidłowa: Miodowe lata (index 0) */
     correct: 0
   },
   {
@@ -151,7 +148,6 @@ let currentQuestion = 0;
 let score = 0;
 let randomizedQuiz = [];
 
-/* prosta funkcja tasująca */
 function shuffleArray(array) {
   return array
     .map(value => ({ value, sort: Math.random() }))
@@ -166,10 +162,8 @@ function startQuiz() {
   document.getElementById("result").classList.add("hidden");
   document.getElementById("quiz").classList.remove("hidden");
 
-  // Stwórz przetasowaną kopię quizu i przetasuj odpowiedzi w każdym pytaniu,
-  // aktualizując indeks poprawnej odpowiedzi.
   randomizedQuiz = quizData.map(q => {
-    const originalAnswers = [...q.answers]; // kopia oryginalnych odpowiedzi
+    const originalAnswers = [...q.answers];
     const correctAnswerText = originalAnswers[q.correct];
     const shuffledAnswers = shuffleArray(originalAnswers);
     const newCorrectIndex = shuffledAnswers.indexOf(correctAnswerText);
@@ -180,7 +174,6 @@ function startQuiz() {
     };
   });
 
-  // dodatkowo przetasuj same pytania (opcjonalnie)
   randomizedQuiz = shuffleArray(randomizedQuiz);
 
   showQuestion();
@@ -202,7 +195,6 @@ function showQuestion() {
 }
 
 function checkAnswer(index) {
-  // pomocniczy log (usuń jeśli chcesz) - w konsoli zobaczysz kliknięty index i correct index
   console.log('Kliknięto index:', index, 'poprawny index:', randomizedQuiz[currentQuestion].correct);
 
   if (index === randomizedQuiz[currentQuestion].correct) {
@@ -242,3 +234,4 @@ function restartQuiz() {
 
 </body>
 </html>
+
