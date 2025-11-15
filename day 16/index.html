@@ -96,7 +96,6 @@
     text-shadow: 1px 1px 5px #000;
   }
 
-  /* Instrukcja */
   #instructions {
     position: absolute;
     width: 100%;
@@ -163,14 +162,13 @@ const lanes = [
 let laneIndex = 1;
 car.style.left = lanes[laneIndex] - car.offsetWidth / 2 + "px";
 
-// Start gry po wciśnięciu Enter
 document.addEventListener('keydown', (e) => {
   if (!gameStarted && e.key === "Enter") {
     instructions.style.display = 'none';
     gameStarted = true;
   }
   
-  if (!gameStarted) return; // nie sterujemy przed startem
+  if (!gameStarted) return;
 
   if (gameOver) return;
   if (e.key === "ArrowLeft" && laneIndex > 0) laneIndex--;
@@ -178,7 +176,6 @@ document.addEventListener('keydown', (e) => {
   car.style.left = lanes[laneIndex] - car.offsetWidth / 2 + "px";
 });
 
-// Tworzenie przeszkód
 function createObstacle() {
   if (!gameStarted) return;
 
@@ -239,3 +236,4 @@ const obstacleInterval = setInterval(createObstacle, 1500);
 
 </body>
 </html>
+
