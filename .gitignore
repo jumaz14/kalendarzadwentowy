@@ -13,5 +13,5 @@ node_modules/
 *.log
 *.tmp
 
-# Obrazy tymczasowe
-/assets/temp/
+# Jeśli masz inne tymczasowe foldery, np. cache
+/cache/
