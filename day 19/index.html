@@ -30,7 +30,6 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* gwiazdy tła */
   .stars{
     position:absolute;
     inset:0;
@@ -52,7 +51,6 @@
     100% {opacity:0;}
   }
 
-  /* karta tekstu */
   .card{
     position:absolute;
     z-index:2;
@@ -84,7 +82,6 @@
     transform: translateY(0) scale(1);
   }
 
-  /* komunikat pod dymkiem */
   .hint{
     margin-top:12px;
     font-size:0.85rem;
@@ -92,7 +89,6 @@
     opacity:0.95;
   }
 
-  /* spadająca gwiazda */
   .shooting-star{
     position:absolute;
     width:10px;
@@ -178,7 +174,6 @@
     }
   });
 
-  // generujemy gwiazdy tła
   (function makeStars(){
     const starsLayer = document.getElementById('stars');
     const w = window.innerWidth, h = window.innerHeight;
@@ -201,3 +196,4 @@
 </script>
 </body>
 </html>
+
