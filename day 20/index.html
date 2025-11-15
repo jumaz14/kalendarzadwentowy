@@ -18,7 +18,6 @@
     overflow: hidden;
   }
 
-  /* Napis nad kopertą */
   .hint {
     font-size: 1.2em;
     color: #d36b82;
@@ -33,7 +32,6 @@
     to { opacity: 1; transform: translateY(-3px); }
   }
 
-  /* Koperta */
   .envelope-container {
     position: relative;
     width: 300px;
@@ -101,10 +99,9 @@
     opacity: 0;
   }
 
-  /* Kartka */
   .letter {
     position: fixed;
-    width: 85vw; /* trochę węższa */
+    width: 85vw; 
     max-width: 520px;
     height: 80vh;
     top: 50%;
@@ -142,7 +139,6 @@
     font-size: 1.7em;
   }
 
-  /* Serduszka */
   .heart {
     position: absolute;
     width: 50px;
@@ -186,7 +182,6 @@
   const envelope = document.getElementById('envelope');
   const letter = document.getElementById('letter');
 
-  // Serduszka w tle
   function createHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
@@ -198,7 +193,6 @@
   }
   setInterval(createHeart, 300);
 
-  // Kliknięcie koperty
   envelopeContainer.addEventListener('click', () => {
     envelope.classList.add('open');
     setTimeout(() => {
@@ -209,3 +203,4 @@
 
 </body>
 </html>
+
