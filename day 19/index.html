@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cicha mini scena — Spadająca gwiazda</title>
+<style>
+  :root{
+    --glass-bg: rgba(0,0,0,0.45);
+    --accent: rgba(255,255,255,0.95);
+    --muted: rgba(255,255,255,0.7);
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background:#000;
+    color:var(--accent);
+    overflow:hidden;
+  }
+
+  .scene{
+    position:fixed;
+    inset:0;
+    background-image: url("https://img.freepik.com/premium-wektory/gwiazdiste-niebo-z-wektorem-drogi-mlecznej-prosta-3d-gladka-izolowana-ilustracja_1067050-462.jpg?semt=ais_incoming&w=740&q=80");
+    background-size:cover;
+    background-position:center center;
+    cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* gwiazdy tła */
+  .stars{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .star {
+    position:absolute;
+    background: rgba(255,255,255,0.9);
+    border-radius:50%;
+    opacity:0.0;
+    animation: twinkle 4s linear infinite;
+  }
+  @keyframes twinkle{
+    0% {opacity:0;}
+    10% {opacity:0.9; transform: scale(1.2);}
+    40% {opacity:0.2;}
+    100% {opacity:0;}
+  }
+
+  /* karta tekstu */
+  .card{
+    position:absolute;
+    z-index:2;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    min-width:280px;
+    max-width:90%;
+    padding:20px 24px;
+    border-radius:16px;
+    background:var(--glass-bg);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    text-align:center;
+    backdrop-filter: blur(6px) saturate(120%);
+  }
+
+  .quote{
+    font-size:1.25rem;
+    line-height:1.4;
+    color:var(--accent);
+    margin:0;
+    opacity:0;
+    transform: translateY(10px) scale(0.995);
+    transition: opacity 420ms cubic-bezier(.2,.9,.25,1), transform 420ms cubic-bezier(.2,.9,.25,1);
+    user-select:none;
+  }
+  .quote.visible{
+    opacity:1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* komunikat pod dymkiem */
+  .hint{
+    margin-top:12px;
+    font-size:0.85rem;
+    color:var(--muted);
+    opacity:0.95;
+  }
+
+  /* spadająca gwiazda */
+  .shooting-star{
+    position:absolute;
+    width:10px;
+    height:10px;
+    background: white;
+    border-radius:50%;
+    box-shadow: 0 0 10px 2px white;
+    z-index:3;
+    opacity:0;
+  }
+</style>
+</head>
+<body>
+<main class="scene" id="scene" tabindex="0" aria-label="Nocne niebo — kliknij żeby wyświetlić zdania">
+  <div class="stars" id="stars" aria-hidden="true"></div>
+
+  <div class="card" role="region" aria-live="polite">
+    <p class="quote" id="q0">Szybko, spadająca gwiazda! Pomyśl życzenie 💫</p>
+    <p class="quote" id="q1">Cokolwiek pomyślałeś, mam nadzieję, że się spełni ✨</p>
+    <p class="quote" id="q2">Dzisiaj już ostatni dzień i noc, jutro już naprawdę się widzimy 💖</p>
+    <p class="hint" id="hint">Kliknij, aby kontynuować</p>
+  </div>
+
+  <div class="shooting-star" id="shootingStar"></div>
+</main>
+
+<script>
+  const quotes = [
+    document.getElementById('q0'),
+    document.getElementById('q1'),
+    document.getElementById('q2')
+  ];
+  const hint = document.getElementById('hint');
+  const shootingStar = document.getElementById('shootingStar');
+  const scene = document.getElementById('scene');
+
+  let index = -1;
+
+  function showQuote(i){
+    quotes.forEach((el, idx)=>el.classList.toggle('visible', idx===i));
+    // pokazujemy hint tylko jeśli jesteśmy w fazie cytatów
+    hint.style.opacity = i>=0 && i<quotes.length ? 0.95 : 0;
+  }
+
+  function shootStar(){
+    shootingStar.style.left = '0%';
+    shootingStar.style.top = Math.random()*50 + '%';
+    shootingStar.style.opacity = 1;
+    shootingStar.style.transform = 'translate(0,0)';
+
+    const duration = 1200;
+    const endX = window.innerWidth + 100;
+    const endY = window.innerHeight*0.6 + Math.random()*100;
+
+    const start = performance.now();
+    function animate(time){
+      const t = Math.min((time - start)/duration,1);
+      const x = t*endX;
+      const y = t*endY;
+      shootingStar.style.transform = `translate(${x}px,${y}px)`;
+      shootingStar.style.opacity = 1-t;
+      if(t<1) requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+  }
+
+  function next(){
+    index++;
+    if(index===0) shootStar();
+    if(index>quotes.length-1){
+      index=-1;
+      quotes.forEach(q=>q.classList.remove('visible'));
+      return;
+    }
+    showQuote(index);
+  }
+
+  scene.addEventListener('click', next);
+  scene.addEventListener('keydown', e=>{
+    if(e.code==='Enter'||e.code==='Space'){
+      e.preventDefault();
+      next();
+    }
+  });
+
+  // generujemy gwiazdy tła
+  (function makeStars(){
+    const starsLayer = document.getElementById('stars');
+    const w = window.innerWidth, h = window.innerHeight;
+    const count = Math.min(100, Math.floor(Math.sqrt(w*h)/5));
+    for(let i=0;i<count;i++){
+      const s = document.createElement('div');
+      s.className='star';
+      const left = Math.random()*100;
+      const top = Math.random()*100;
+      const size = 2+Math.random()*3;
+      s.style.left=left+'%';
+      s.style.top=top+'%';
+      s.style.width=size+'px';
+      s.style.height=size+'px';
+      s.style.animationDelay=(Math.random()*4)+'s';
+      s.style.opacity=0.5+Math.random()*0.5;
+      starsLayer.appendChild(s);
+    }
+  })();
+</script>
+</body>
+</html>

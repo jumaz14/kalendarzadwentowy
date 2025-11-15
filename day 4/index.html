@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dzień 4 – Kapsuła czasu</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #cce0ff, #a2c5ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    color: #333;
+    overflow-x: hidden;
+  }
+
+  img.main-img {
+    max-width: 80%;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+  }
+
+  .counter, .progress-container, .final-text {
+    margin-bottom: 20px;
+  }
+
+  .progress-container {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .progress-bar-wrapper {
+    position: relative;
+    flex: 1;
+    height: 30px;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #ff6b81;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    transition: width 1s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .progress-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    line-height: 30px;
+    color: white;
+    pointer-events: none;
+  }
+
+  .hourglass-side {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 100px;
+    opacity: 0.7;
+    animation: sandFlow 3s infinite ease-in-out;
+  }
+
+  .hourglass-left {
+    left: 120px;
+  }
+
+  .hourglass-right {
+    right: 120px;
+  }
+
+  @keyframes sandFlow {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    50% { transform: translateY(-50%) rotate(10deg); }
+    100% { transform: translateY(-50%) rotate(0deg); }
+  }
+
+  h1 {
+    margin-bottom: 20px;
+  }
+
+</style>
+</head>
+<body>
+
+<h1>💌 Kapsuła czasu</h1>
+
+<div class="counter">
+  <h2>Od ostatniego spotkania minęło:</h2>
+  <p id="sinceLast"></p>
+  <h2>Do naszego spotkania zostało:</h2>
+  <p id="untilNext"></p>
+</div>
+
+<div class="progress-container">
+  <div class="progress-bar-wrapper">
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="progress-text" id="progressText">0%</div>
+  </div>
+</div>
+
+<div class="final-text">
+  <h2 id="finalText">Już niedługo się widzimy! 🕰️</h2>
+</div>
+
+<!-- Klepsydry po bokach ekranu -->
+<img src="https://cdn-icons-png.flaticon.com/128/4320/4320231.png" alt="klepsydra" class="hourglass-side hourglass-left">
+<img src="https://cdn-icons-png.flaticon.com/128/4320/4320231.png" alt="klepsydra" class="hourglass-side hourglass-right">
+
+<script>
+  const lastVisit = new Date("2025-08-04T14:30:00");
+  const nextVisit = new Date("2025-12-20T12:00:00");
+
+  function updateCounter() {
+    const now = new Date();
+
+    // Od ostatniego spotkania
+    let diffLast = now - lastVisit;
+    const daysLast = Math.floor(diffLast / (1000*60*60*24));
+    const hoursLast = Math.floor(diffLast / (1000*60*60) % 24);
+    const minutesLast = Math.floor(diffLast / (1000*60) % 60);
+    const secondsLast = Math.floor(diffLast / 1000 % 60);
+    document.getElementById("sinceLast").innerText = 
+      `${daysLast} dni, ${hoursLast} godzin, ${minutesLast} minut, ${secondsLast} sekund`;
+
+    // Do następnego spotkania
+    let diffNext = nextVisit - now;
+    const daysNext = Math.floor(diffNext / (1000*60*60*24));
+    const hoursNext = Math.floor(diffNext / (1000*60*60) % 24);
+    const minutesNext = Math.floor(diffNext / (1000*60) % 60);
+    const secondsNext = Math.floor(diffNext / 1000 % 60);
+    document.getElementById("untilNext").innerText = 
+      `${daysNext} dni, ${hoursNext} godzin, ${minutesNext} minut, ${secondsNext} sekund`;
+
+    // Pasek postępu
+    const totalDuration = nextVisit - lastVisit;
+    const progress = ((now - lastVisit) / totalDuration) * 100;
+    const bar = document.getElementById("progressBar");
+    const text = document.getElementById("progressText");
+    bar.style.width = progress + "%";
+    text.innerText = Math.floor(progress) + "%";
+  }
+
+  updateCounter();
+  setInterval(updateCounter, 1000);
+</script>
+
+</body>
+</html>

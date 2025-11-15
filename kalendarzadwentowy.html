@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalendarz Adwentowy 🎄</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+body {
+  margin: 0;
+  padding: 0;
+  background: url('https://storyloop.com/_next/image?url=https%3A%2F%2Fstoryloop-downloads.sfo2.cdn.digitaloceanspaces.com%2Fwp-uploads%2F2022%2F12%2F38d867d4fbab-thumb-768x432.jpg&w=2048&q=75') center/cover no-repeat fixed;
+  font-family: 'Nunito', sans-serif;
+  color: #fff;
+  overflow-x: hidden;
+  text-align: center;
+}
+
+h1 {
+  font-family: 'Mountains of Christmas', cursive;
+  font-size: 60px;
+  margin-top: 40px;
+  color: #fffdec;
+  text-shadow: 0 0 10px #c62828;
+}
+
+/* ===== KALENDARZ – STAŁA SIATKA ===== */
+
+.calendar {
+  width: 90%;
+  max-width: 900px;
+  margin: 40px auto;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 100px;
+  gap: 12px;
+}
+
+/* ===== OKIENKA ===== */
+
+.door {
+  background: rgba(255, 0, 0, 0.85);
+  border: 2px solid #fff;
+  border-radius: 12px;
+  padding-top: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px #0006;
+  position: relative;
+  perspective: 1200px; /* Mocniejsze 3D */
+  overflow: hidden;
+}
+
+/* Panel – front drzwiczek */
+.door-inner {
+  transition: transform 0.9s cubic-bezier(.25, .46, .45, .94),
+             box-shadow 0.6s ease;
+  transform-origin: left center;
+}
+
+/* Animacja otwierania – bardziej realistyczna */
+.door.open .door-inner {
+  transform: rotateY(-150deg);
+  box-shadow: inset 0 0 40px #0009;
+}
+
+/* Delikatne podniesienie na hover */
+.door:hover .door-inner {
+  box-shadow: inset 0 0 15px #0006;
+}
+
+.locked {
+  pointer-events: none;
+  opacity: 0.5;
+  filter: grayscale(70%);
+}
+
+#door1 { grid-column: span 2; grid-row: span 2; }
+#door2 { grid-column: span 1; grid-row: span 2; }
+#door3 { grid-column: span 2; }
+#door4 { grid-column: span 1; }
+#door5 { grid-column: span 2; grid-row: span 1; }
+#door6 { grid-column: span 1; grid-row: span 2; }
+#door7 { grid-column: span 2; }
+#door8 { grid-column: span 1; }
+#door9 { grid-column: span 2; }
+#door10 { grid-column: span 2; grid-row: span 2; }
+
+#door11 { grid-column: span 2; }
+#door12 { grid-column: span 1; grid-row: span 2;}
+#door13 { grid-column: span 1; grid-row: span 2; }
+#door14 { grid-column: span 2; }
+#door15 { grid-column: span 2; }
+#door16 { grid-column: span 1; grid-row: span 2; }
+#door17 { grid-column: span 1; grid-row: span 2;}
+#door18 { grid-column: span 2; }
+#door19 { grid-column: span 2; }
+#door20 { grid-column: span 2; }
+
+/* ===== ŚNIEG ===== */
+
+@keyframes snow {
+  0% { transform: translateY(-10px); }
+  100% { transform: translateY(100vh); }
+}
+
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: white;
+  font-size: 18px;
+  animation: snow linear infinite;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.footer {
+  margin-top: 50px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎁 Kalendarz Adwentowy 🎄</h1>
+
+<div class="calendar">
+
+  <!-- Stałe okienka -->
+<script>
+  const ICONS = ["🎁", "🎄", "⭐", "🦌", "⛄", "🧦", "🔔", "🕯️"];
+
+  // Pobieramy prawdziwą datę z systemu
+  const now = new Date();
+
+  const isTestNovember = now.getMonth() === 10;   // ZMIEŃ POTEM NA GRUDZIEŃ !!!!!
+  const currentDay = now.getDate();
+  const unlockedUntil = isTestNovember ? currentDay : 0;
+
+  for (let i = 1; i <= 20; i++) {
+    const lockedClass = i > unlockedUntil ? "locked" : "";
+
+    document.write(`
+      <div class="door ${lockedClass}" id="door${i}" data-day="${i}">
+        <div class="door-inner">
+          <div style="font-size:32px">${ICONS[Math.floor(Math.random()*ICONS.length)]}</div>
+          Dzień ${i}
+        </div>
+      </div>
+    `);
+  }
+</script>
+
+
+</div>
+
+<div class="footer">Made with ❤️ by Justyna</div>
+
+<script>
+document.querySelectorAll(".door").forEach(door => {
+  door.addEventListener("click", () => {
+    door.classList.add("open");
+    setTimeout(() => {
+      window.location.href = "days/day" + door.dataset.day + ".html";
+    }, 700);
+  });
+});
+
+/* Śnieg */
+function createSnowflake() {
+  const snow = document.createElement("div");
+  snow.classList.add("snowflake");
+  snow.textContent = "❄";
+  snow.style.left = Math.random() * 100 + "vw";
+  snow.style.animationDuration = 4 + Math.random() * 6 + "s";
+  snow.style.fontSize = 12 + Math.random() * 18 + "px";
+  document.body.appendChild(snow);
+  setTimeout(() => snow.remove(), 10000);
+}
+setInterval(createSnowflake, 150);
+</script>
+
+</body>
+</html>

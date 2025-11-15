@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fortune Cookie - Dzień 3</title>
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(#fceabb, #f8b500);
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+  }
+
+  h1 {
+    margin-bottom: 30px;
+    color: #6b3e00;
+  }
+
+  .cookie {
+    width: 150px;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .cookie:hover {
+    transform: scale(1.1);
+  }
+
+  .fortune {
+    margin-top: 20px;
+    font-size: 1.3rem;
+    color: #4b2e0f;
+    display: none;
+    max-width: 350px;
+  }
+
+  /* animacja pęknięcia */
+  .cracked {
+    animation: crack 0.5s forwards;
+  }
+
+  @keyframes crack {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(-10deg) scale(1.1); }
+    100% { transform: rotate(0deg) scale(1); }
+  }
+</style>
+</head>
+<body>
+
+<h1>🥠 Kliknij ciasteczko, aby odkryć wróżbę!</h1>
+<img src="https://cdn-icons-png.flaticon.com/128/3915/3915092.png" alt="Fortune Cookie" class="cookie" id="cookie">
+<div class="fortune" id="fortune"></div>
+
+<script>
+  const cookie = document.getElementById('cookie');
+  const fortuneText = document.getElementById('fortune');
+
+  const fortunes = [
+    "Za 17 dni zobaczysz najlepszy prezent ever. Spoiler: to ja 😇",
+    "Nie spoglądaj za siebie – najlepsze wydarzy się teraz 🌅",
+    "Każdego dnia zbliżasz się do czegoś naprawdę wyjątkowego ❤️",
+    "Twoja cierpliwość zostanie nagrodzona słodkim spotkaniem 🥰",
+    "Uśmiechaj się, bo ktoś myśli o Tobie właśnie teraz 😘",
+    "Nie trać nadziei – najlepsze chwile są jeszcze przed Tobą 🌟",
+    "Już wkrótce coś wyjątkowego rozświetli Twój dzień ✨",
+    "Dziś los Ci sprzyja – uśmiechnij się szeroko 😄",
+    "Za każdym kliknięciem wróżba staje się jeszcze słodsza 🍭",
+    "Nie zapomnij dzisiaj o sobie… ale myśl też o mnie 🥰",
+    "Każda minuta przybliża Cię do chwili, na którą czekałeś ⏳❤️",
+    "Ktoś jest dzięki Tobie bardzo szczęśliwy ❤️",
+    "Dziś Twój dzień może być magiczny – uwierz w to ✨",
+    "Dziś drobny gest może przynieść ogromną radość 💌"
+  ];
+
+  cookie.addEventListener('click', () => {
+    // reset animacji, żeby za każdym razem zadziałała
+    cookie.classList.remove('cracked');
+    void cookie.offsetWidth; // wymusza reflow
+    cookie.classList.add('cracked');
+
+    // losujemy wróżbę
+    const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+
+    // po animacji pokazujemy wróżbę
+    setTimeout(() => {
+      fortuneText.textContent = randomFortune;
+      fortuneText.style.display = 'block';
+    }, 500);
+  });
+</script>
+
+</body>
+</html>

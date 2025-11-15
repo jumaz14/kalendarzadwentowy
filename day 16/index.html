@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Gra – Krzysiu Jedzie</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    background: #dfe7ec;
+    font-family: Arial, sans-serif;
+    color: #333;
+    text-align: center;
+  }
+
+  h2, p {
+    margin: 5px 0;
+  }
+
+  #game {
+    width: 500px;
+    height: 100vh;
+    background: #4b4b4b; /* asfalt */
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    border-left: 8px solid #888;
+    border-right: 8px solid #888;
+    box-shadow: 0 0 30px rgba(0,0,0,0.4);
+  }
+
+  .lane {
+    position: absolute;
+    width: 6px;
+    height: 200%;
+    background: repeating-linear-gradient(
+      to bottom,
+      #ccc 0px,
+      #ccc 30px,
+      transparent 30px,
+      transparent 60px
+    );
+    opacity: 0.85;
+    animation: scrollLanes 0.3s linear infinite;
+  }
+
+  @keyframes scrollLanes {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(60px); }
+  }
+
+  #car {
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    bottom: 70px;
+    background-image: url('https://cdn-icons-png.flaticon.com/128/12689/12689302.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: left 0.1s;
+  }
+
+  .obstacle {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .snow { background-image: url('https://cdn-icons-png.flaticon.com/128/12583/12583603.png'); }
+  .traffic { background-image: url('https://cdn-icons-png.flaticon.com/128/11433/11433678.png'); }
+  .police { background-image: url('https://cdn-icons-png.flaticon.com/128/12668/12668865.png'); }
+
+  #score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    color: black;
+  }
+
+  #message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffcccc;
+    font-size: 30px;
+    text-shadow: 1px 1px 5px #000;
+  }
+
+  /* Instrukcja */
+  #instructions {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    z-index: 10;
+  }
+
+  #instructions p {
+    margin: 10px 0;
+  }
+
+  #instructions span {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #ff0;
+  }
+</style>
+</head>
+<body>
+
+<div id="instructions">
+  <h2>Instrukcja Gry</h2>
+  <p>Dojedź na czas na lotnisko, żeby odebrać Justynę.<br>
+     Unikaj policji, innych aut i śniegu.<br>
+     Steruj strzałkami.<br>
+     Nie dostań kolejnego mandatu!</p>
+  <span>Wciśnij Enter, aby rozpocząć grę</span>
+</div>
+
+<h2>Droga na lotnisko 🚗</h2>
+
+<div id="game">
+  <div id="car"></div>
+  <div class="lane" style="left:33%;"></div>
+  <div class="lane" style="left:66%;"></div>
+</div>
+
+<div id="score">Kilometry: 0</div>
+<div id="message"></div>
+
+<script>
+const game = document.getElementById('game');
+const car = document.getElementById('car');
+const scoreDisplay = document.getElementById('score');
+const message = document.getElementById('message');
+const instructions = document.getElementById('instructions');
+
+let score = 0;
+let gameOver = false;
+let gameStarted = false;
+
+const lanes = [
+  game.offsetWidth * 0.2,
+  game.offsetWidth * 0.5,
+  game.offsetWidth * 0.8
+];
+let laneIndex = 1;
+car.style.left = lanes[laneIndex] - car.offsetWidth / 2 + "px";
+
+// Start gry po wciśnięciu Enter
+document.addEventListener('keydown', (e) => {
+  if (!gameStarted && e.key === "Enter") {
+    instructions.style.display = 'none';
+    gameStarted = true;
+  }
+  
+  if (!gameStarted) return; // nie sterujemy przed startem
+
+  if (gameOver) return;
+  if (e.key === "ArrowLeft" && laneIndex > 0) laneIndex--;
+  if (e.key === "ArrowRight" && laneIndex < lanes.length - 1) laneIndex++;
+  car.style.left = lanes[laneIndex] - car.offsetWidth / 2 + "px";
+});
+
+// Tworzenie przeszkód
+function createObstacle() {
+  if (!gameStarted) return;
+
+  const obstacle = document.createElement('div');
+  obstacle.classList.add('obstacle');
+  const types = ['snow', 'traffic', 'police'];
+  const type = types[Math.floor(Math.random() * types.length)];
+  obstacle.classList.add(type);
+
+  const lane = lanes[Math.floor(Math.random() * lanes.length)];
+  obstacle.style.left = lane - 30 + "px";
+  obstacle.style.top = "0px";
+  game.appendChild(obstacle);
+
+  let pos = 0;
+  const interval = setInterval(() => {
+    if (gameOver) {
+      clearInterval(interval);
+      obstacle.remove();
+      return;
+    }
+
+    pos += 5;
+    obstacle.style.top = pos + "px";
+
+    const carRect = car.getBoundingClientRect();
+    const obsRect = obstacle.getBoundingClientRect();
+    if (
+      obsRect.bottom >= carRect.top &&
+      obsRect.top <= carRect.bottom &&
+      obsRect.right >= carRect.left &&
+      obsRect.left <= carRect.right
+    ) {
+      gameOver = true;
+      message.textContent = "Game Over 😢 Dostałeś mandat, spóźniłeś się i przez Ciebie Justyna musiała wracać pociągiem 😔";
+      setTimeout(() => location.reload(), 5000);
+      clearInterval(interval);
+    }
+
+    if (pos > game.offsetHeight) {
+      clearInterval(interval);
+      obstacle.remove();
+      if (!gameOver) {
+        score++;
+        scoreDisplay.textContent = "Punkty: " + score;
+        if (score >= 20) {
+          gameOver = true;
+          message.textContent = "Wygrałeś! Udało Ci się dojechać na czas ❤️";
+          clearInterval(obstacleInterval);
+        }
+      }
+    }
+  }, 40);
+}
+
+const obstacleInterval = setInterval(createObstacle, 1500);
+</script>
+
+</body>
+</html>

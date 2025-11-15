@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💘 Love Claw Machine 💘</title>
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at center, #ffb6c1 0%, #ff80ab 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+h1 {
+  color: white;
+  text-align: center;
+  font-weight: 600;
+  text-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  margin-bottom: 10px;
+  z-index: 10;
+  position: relative;
+}
+
+.description {
+  color: white;
+  font-size: 18px;
+  max-width: 240px;
+  line-height: 1.4;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.arcade {
+  position: relative;
+  width: 340px;
+  height: 460px;
+  background: #e91e63;
+  border-radius: 20px;
+  box-shadow: 0 12px 0 #b31245, inset 0 0 0 6px #fff3;
+  overflow: hidden;
+}
+
+.glass {
+  position: absolute;
+  top: 20px;
+  left: 15px;
+  width: 310px;
+  height: 330px;
+  background: linear-gradient(180deg, #ffffff66, #ffffff22);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.claw {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50px;
+  height: 130px;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.arm {
+  position: absolute;
+  width: 6px;
+  height: 100px;
+  background: #444;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.grabber {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 40px;
+  height: 25px;
+  background: transparent;
+  transform: translateX(-50%);
+}
+
+.grabber::before,
+.grabber::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 25px;
+  background: #333;
+  top: 0;
+  border-radius: 3px;
+  transform-origin: top center;
+}
+.grabber::before {
+  left: 0;
+  transform: rotate(25deg);
+}
+.grabber::after {
+  right: 0;
+  transform: rotate(-25deg);
+}
+
+.ball {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid #f48fb1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #333;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.controls {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  background: #fff;
+  border: 3px solid #f06292;
+  color: #e91e63;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 15px;
+}
+
+button:hover {
+  background: #f06292;
+  color: white;
+}
+
+.card {
+  background: white;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  margin-top: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+  text-align: right;
+  font-family: 'Poppins', sans-serif;
+  color: #e91e63;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes clawMoveDown {
+  0% { top: 0; }
+  50% { top: 220px; }
+  100% { top: 0; }
+}
+
+.animate {
+  animation: clawMoveDown 4s ease-in-out forwards;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="arcade">
+    <h1>💘 Claw Machine 💘</h1>
+    <div class="glass">
+      <div class="claw" id="claw">
+        <div class="arm"></div>
+        <div class="grabber"></div>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="playBtn">PLAY 🎯</button>
+    </div>
+  </div>
+
+  <div class="description">
+    <h2>💌 Wylosuj głupi tekst na podryw na dziś!</h2>
+    <p>Kliknij <b>PLAY</b>, a nasza urocza maszyna losująca wylosuje Ci wyjątkową kulkę z tekstem, który możesz dziś wykorzystać — lub po prostu się pośmiać 😏</p>
+    <div class="card" id="messageCard"></div>
+  </div>
+</div>
+
+<audio id="sound-start" src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg"></audio>
+<audio id="sound-win" src="https://actions.google.com/sounds/v1/cartoon/congratulations.ogg"></audio>
+
+<script>
+const messages = [
+  "Zabrałabym Cię do kina, ale niestety nie wpuszczają z własnymi słodyczami 🍬",
+  "Twoje oczy są lepsze niż te w rosole 👀",
+  "W skali od 1 do 9 daję Ci 9, bo jedyne czego Ci brakuje to mnie obok 💘",
+  "Muszą Cię boleć nogi, bo cały dzień chodziłeś mi po głowie ✨",
+  "Twoje imię to Google? Bo masz wszystko, czego szukam 😇",
+  "Masz może ładunek elektryczny? Bo mnie kopie, jak cię widzę ✨",
+  "Jesteś jak hotel tylko bez 'el' 🔥",
+  "Dla Ciebie zjadłabym rodzynki w serniku 🤩",
+  "Gdybyś był piosenką to bym Cię znała na pamięć 😘",
+  "Jesteś cukrzycą typu 2? Bo wywarłeś nieodwracalny wpływ na moje serce 💘"
+];
+
+const claw = document.getElementById("claw");
+const glass = document.querySelector(".glass");
+const playBtn = document.getElementById("playBtn");
+const soundStart = document.getElementById("sound-start");
+const soundWin = document.getElementById("sound-win");
+const messageCard = document.getElementById("messageCard");
+
+let balls = [];
+let moving = false;
+
+// tworzenie kulek
+for (let i = 0; i < 25; i++) {
+  const ball = document.createElement("div");
+  ball.classList.add("ball");
+  ball.style.left = (Math.random() * 270) + "px";
+  ball.style.top = (180 + Math.random() * 120) + "px";
+  ball.style.background = `hsl(${Math.random()*360}, 70%, 75%)`;
+  glass.appendChild(ball);
+  balls.push({
+    el: ball,
+    x: parseFloat(ball.style.left),
+    y: parseFloat(ball.style.top),
+    dx: (Math.random() - 0.5) * 1.8,
+    dy: (Math.random() - 0.5) * 1.8
+  });
+}
+
+// animacja ruchu kulek
+function moveBalls() {
+  balls.forEach(b => {
+    b.x += b.dx;
+    b.y += b.dy;
+
+    if (b.x <= 0 || b.x >= 276) b.dx *= -1;
+    if (b.y <= 180 || b.y >= 296) b.dy *= -1;
+
+    b.el.style.left = b.x + "px";
+    b.el.style.top = b.y + "px";
+  });
+  requestAnimationFrame(moveBalls);
+}
+moveBalls();
+
+playBtn.addEventListener("click", () => {
+  if (moving) return;
+  moving = true;
+  messageCard.classList.remove("show");
+  messageCard.textContent = "";
+
+  soundStart.play();
+  claw.classList.add("animate");
+
+  // claw schodzi w dół i "łapie" kulkę
+  setTimeout(() => {
+    const randBall = balls[Math.floor(Math.random() * balls.length)];
+    const randMsg = messages[Math.floor(Math.random() * messages.length)];
+    const clawX = claw.offsetLeft - 15;
+    const clawY = 220;
+
+    // zatrzymanie kulki i jej przeniesienie do claw
+    randBall.el.style.left = clawX + "px";
+    randBall.el.style.top = clawY + "px";
+    randBall.el.style.transition = "all 2s ease-in-out";
+
+    setTimeout(() => {
+      soundWin.play();
+
+      // claw podnosi kulkę z powrotem
+      randBall.el.style.top = "60px";
+
+      setTimeout(() => {
+        randBall.el.style.opacity = "0";
+        messageCard.textContent = randMsg;
+        messageCard.classList.add("show");
+        moving = false;
+
+        setTimeout(() => {
+          randBall.el.style.opacity = "1";
+          randBall.el.style.top = (180 + Math.random() * 120) + "px";
+        }, 1000);
+      }, 2000);
+    }, 1000);
+  }, 1500);
+
+  setTimeout(() => claw.classList.remove("animate"), 4000);
+});
+</script>
+
+</body>
+</html>
