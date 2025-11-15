@@ -165,7 +165,7 @@ document.querySelectorAll(".door").forEach(door => {
   door.addEventListener("click", () => {
     door.classList.add("open");
     setTimeout(() => {
-      window.location.href = "days/day" + door.dataset.day + ".html";
+      window.location.href = "day " + door.dataset.day + "/index.html";
     }, 700);
   });
 });
@@ -186,3 +186,4 @@ setInterval(createSnowflake, 150);
 
 </body>
 </html>
+
