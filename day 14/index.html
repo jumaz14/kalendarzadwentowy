@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Puzzle ze zdjęcia (drag & drop)</title>
+<style>
+  :root{
+    --size: 80px;
+    --gap: 2px;
+  }
+  body{
+    font-family: Arial, Helvetica, sans-serif;
+    background: #fff8f0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px;
+    min-height:100vh;
+    gap:16px;
+  }
+  h1{ color:#d6336c; margin:0 0 6px 0; }
+
+#subtitle {
+  margin-top: -4px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: #b02558;
+  text-align: center;
+  opacity: 0.9;
+}
+
+
+  #puzzle-container{
+    display:grid;
+    gap: var(--gap);
+    background: transparent;
+    padding: 6px;
+  }
+
+  .slot{
+    width: var(--size);
+    height: var(--size);
+    background: linear-gradient(180deg,#fff 0%, #f5f0ee 100%);
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  .piece{
+    width: var(--size);
+    height: var(--size);
+    background-size: cover;
+    border-radius:4px;
+    border:1px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.14);
+    cursor: grab;
+    user-select:none;
+  }
+  .piece.dragging{ opacity:0.6; transform: scale(0.98); }
+
+  #message{
+    font-size:18px;
+    color:#d6336c;
+    text-align:center;
+    display:none;
+    max-width:320px;
+  }
+
+  #message.show{
+    display:block;
+    animation: pop 600ms ease;
+  }
+  @keyframes pop{
+    0%{ transform: scale(.9); opacity:0 }
+    60%{ transform: scale(1.03); opacity:1 }
+    100%{ transform: scale(1); opacity:1 }
+  }
+
+  @media (max-width:420px){
+    :root{ --size: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>🧩Nasze Puzzle🧩</h1>
+
+<p id="subtitle">Ułóż puzzle z naszego zdjęcia 💗</p>
+
+<div id="puzzle-container"></div>
+
+<div id="message">Nie mamy jeszcze dużo wspólnych zdjęć… ale niedługo to nadrobimy 💗📸</div>
+
+<script>
+  const imageSrc = 'my.jpg';
+
+  const rows = 5;
+  const cols = 4;
+
+  const container = document.getElementById('puzzle-container');
+  container.style.gridTemplateColumns = `repeat(${cols}, var(--size))`;
+  container.style.gridTemplateRows = `repeat(${rows}, var(--size))`;
+
+  const message = document.getElementById('message');
+
+  const total = rows * cols;
+  const positions = [];
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      positions.push({ row: r, col: c });
+    }
+  }
+
+
+  for (let i = 0; i < total; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'slot';
+    slot.dataset.slotIndex = i;
+    slot.addEventListener('dragover', e => e.preventDefault());
+    slot.addEventListener('drop', onDropToSlot);
+    container.appendChild(slot);
+  }
+
+  const pieces = positions.map((pos, idx) => {
+    const p = document.createElement('div');
+    p.className = 'piece';
+    p.setAttribute('draggable', 'true');
+    p.dataset.correct = idx;
+
+    const bgWidth = cols * parseInt(getComputedStyle(document.documentElement).getPropertyValue('--size'));
+    const bgHeight = rows * parseInt(getComputedStyle(document.documentElement).getPropertyValue('--size'));
+
+    p.style.backgroundImage = `url(${imageSrc})`;
+    p.style.backgroundSize = `${bgWidth}px ${bgHeight}px`;
+    p.style.backgroundPosition = `-${pos.col * 80}px -${pos.row * 80}px`;
+
+    p.addEventListener('dragstart', e => {
+      draggedPiece = p;
+      p.classList.add('dragging');
+      try { e.dataTransfer.setData('text/plain', 'x'); } catch(e){}
+    });
+
+    p.addEventListener('dragend', () => {
+      p.classList.remove('dragging');
+      draggedPiece = null;
+    });
+
+    return p;
+  });
+
+  // tasowanie
+  function shuffleArray(arr){
+    for(let i=arr.length-1; i>0; i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]]=[arr[j],arr[i]];
+    }
+  }
+  shuffleArray(pieces);
+
+  const slots = Array.from(document.querySelectorAll('.slot'));
+  slots.forEach((slot, i) => slot.appendChild(pieces[i]));
+
+  let draggedPiece = null;
+
+  function onDropToSlot(e){
+    e.preventDefault();
+    const slot = e.currentTarget;
+    if (!draggedPiece) return;
+
+    const fromSlot = draggedPiece.parentElement;
+    if (slot === fromSlot) return;
+
+    const target = slot.querySelector('.piece');
+
+    slot.appendChild(draggedPiece);
+    if (target) fromSlot.appendChild(target);
+
+    checkPuzzle();
+  }
+
+  function checkPuzzle(){
+    let correct = true;
+
+    for(let i=0;i<slots.length;i++){
+      const piece = slots[i].querySelector('.piece');
+      if(!piece || Number(piece.dataset.correct) !== i){
+        correct = false;
+        break;
+      }
+    }
+
+    if (correct) {
+      message.classList.add('show');
+    } else {
+      message.classList.remove('show');
+    }
+  }
+
+  checkPuzzle();
+</script>
+
+</body>
+</html>
