@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Where’s Justyna?</title>
+
+<style>
+  :root{
+    --bg:#e8f2ff;
+    --card:#fff;
+    --accent:#ff6b81;
+    --text:#103049;
+    --shadow: rgba(16,48,73,0.12);
+  }
+
+  *{ box-sizing:border-box }
+
+  body{
+    font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    margin:0;
+    min-height:100vh;
+    background:linear-gradient(180deg,var(--bg),#fff);
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+
+  .container{
+    width:100%;
+    max-width:980px;
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:0 8px 30px var(--shadow);
+    overflow:hidden;
+  }
+
+  header{
+    padding:18px 22px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    border-bottom:1px solid #f0f6fb;
+  }
+
+  h1{ font-size:18px; margin:0 }
+  p.lead{ margin:0; opacity:0.9; font-size:14px }
+
+  .game-area{
+    position:relative;
+    padding:22px;
+    display:grid;
+    grid-template-columns:1fr 260px;
+    gap:18px;
+  }
+
+  /* Board */
+  .scene{
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.02) 0 1px, transparent 1px 60px);
+    border-radius:10px;
+    padding:12px;
+    position:relative;
+    min-height:520px;
+    overflow:hidden;
+  }
+
+  /* Right panel */
+  .info-panel{ padding:12px }
+  .instructions{ font-size:14px; margin-bottom:10px }
+
+  .hint-btn, .reset-btn{
+    display:inline-block;
+    border-radius:10px;
+    padding:10px 12px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+  }
+
+  .hint-btn{
+    background:transparent;
+    border:1px solid #103049;
+    color:#103049;
+  }
+
+  .reset-btn{
+    background:#103049;
+    color:#fff;
+  }
+
+  .result{
+    margin-top:14px;
+    font-size:16px;
+    font-weight:700;
+  }
+
+  .hidden{ display:none }
+
+  footer{
+    padding:12px 22px;
+    border-top:1px solid #f0f6fb;
+    font-size:13px;
+    color:#38506d;
+  }
+
+  /* Search target */
+  .item{
+    position:absolute;
+    width:45px;
+    height:auto;
+    cursor:pointer;
+    transform-origin:center;
+    transition:transform .15s ease, box-shadow .12s ease;
+  }
+
+  .item:hover{
+    transform:translateY(-6px) scale(1.06);
+    box-shadow:0 10px 20px rgba(16,48,73,0.12);
+  }
+
+  /* Reference box */
+  .ref-box{
+    margin-top:20px;
+    padding:12px;
+    border-radius:12px;
+    background:#f7faff;
+    text-align:center;
+    border:1px solid #e0e9f5;
+  }
+
+  .ref-box img{
+    width:70px;
+    image-rendering:pixelated;
+  }
+
+  .ref-label{
+    margin-top:6px;
+    font-size:13px;
+    opacity:0.8;
+  }
+
+  @media (max-width:920px){
+    .game-area{ grid-template-columns:1fr }
+    .scene{ min-height:420px }
+  }
+</style>
+</head>
+
+<body>
+<div class="container" role="application" aria-label="Gra: znajdź Justynę na lotnisku">
+
+  <header>
+    <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#fff,#f6f8ff);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)">🕵️‍♂️</div>
+    <div>
+      <h1>Gdzie jest Justyna?</h1>
+      <p class="lead">Sprawdź swoją spostrzegawczość i wypatrz Justynę na zatłoczonym lotnisku! Kliknij w jej postać.</p>
+    </div>
+  </header>
+
+  <div class="game-area">
+
+    <!-- MAIN IMAGE AREA -->
+    <div class="scene" id="scene">
+      <img src="wheres-waldo1.jpg"
+           id="bg"
+           alt="Tło lotniska"
+           style="width:100%;height:100%;object-fit:cover;border-radius:10px;pointer-events:none;position:absolute;inset:0;" />
+
+      <img src="postac.png"
+           id="targetJustyna"
+           alt="Justyna"
+           class="item" />
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <aside class="info-panel">
+      <div class="instructions">
+        <strong>Zadanie:</strong> Znajdź Justynę na obrazku.
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="hint-btn" id="hintBtn">PODPOWIEDŹ</button>
+        <button class="reset-btn" id="resetBtn">ZRESETUJ</button>
+      </div>
+
+      <div class="meta" style="margin-top:12px;font-size:14px;">
+        Justyna jest dobrze ukryta 👀
+      </div>
+
+      <!-- RESULT -->
+      <div class="result hidden" id="result">
+        Znalazłeś Justynę!<br>Teraz musisz znaleźć już tylko tą prawdziwą ❤️
+      </div>
+
+      <!-- REFERENCE BOX -->
+      <div class="ref-box">
+        <img src="postac.png" alt="Justyna — wzór">
+        <div class="ref-label">Justyna wygląda tak</div>
+      </div>
+    </aside>
+  </div>
+
+  <footer>Zbliż i szukaj — działa też na telefonie.</footer>
+</div>
+
+<script>
+const scene = document.getElementById('scene');
+const justyna = document.getElementById('targetJustyna');
+const hintBtn = document.getElementById('hintBtn');
+const resetBtn = document.getElementById('resetBtn');
+const resultEl = document.getElementById('result');
+
+function randomizeJustyna(){
+  resultEl.classList.add('hidden');
+
+  const rect = scene.getBoundingClientRect();
+  const w = 45, h = 45;
+
+  const left = Math.random() * (rect.width - w - 20) + 10;
+  const top  = Math.random() * (rect.height - h - 20) + 10;
+
+  justyna.style.left = left + 'px';
+  justyna.style.top = top + 'px';
+
+  justyna.style.pointerEvents = 'auto';
+}
+
+justyna.addEventListener('click', ()=>{
+  resultEl.classList.remove('hidden');
+  justyna.style.pointerEvents = 'none';
+});
+
+hintBtn.addEventListener('click', ()=>{
+  justyna.animate(
+    [
+      {filter:'brightness(1)'},
+      {filter:'brightness(2)'},
+      {filter:'brightness(1)'}
+    ],
+    {duration:700}
+  );
+});
+
+resetBtn.addEventListener('click', randomizeJustyna);
+
+window.addEventListener('load', randomizeJustyna);
+</script>
+
+</body>
+</html>
