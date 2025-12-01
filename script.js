@@ -3,7 +3,7 @@ const ICONS = ["🎁","🎄","⭐","🦌","⛄","🧦","🔔","🕯️"];
 const now = new Date();
 const isTestNovember = now.getMonth() === 11;
 const currentDay = now.getDate();
-const unlockedUntil = 20//isTestNovember ? currentDay : 0;
+const unlockedUntil = isTestNovember ? currentDay : 0;
 
 const calendar = document.getElementById("calendar");
 
@@ -34,3 +34,4 @@ document.querySelectorAll(".door").forEach(door => {
     }, 700);
   });
 });
+
