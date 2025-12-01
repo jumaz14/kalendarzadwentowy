@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dzień 8 – Wojna na śnieżki</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="snowCanvas"></canvas>
+
+<div id="startScreen">
+    <h1>❄️ Bitwa na śnieżki ❄️</h1>
+    <p>
+        Zasady: <br><br>
+        Naciśnij <strong>SPACJĘ</strong>, aby rzucić śnieżką w odpowiednim momencie — <br>
+        im bliżej środka paska mocy, tym mocniejszy rzut! <br><br>
+        Traf Justynę, zanim ona trafi Ciebie! 🎯
+    </p>
+    <button id="startBtn">Start</button>
+</div>
+
+<div class="ui-layer" id="gameUI" style="display:none;">
+    <div class="character">
+        <div class="power-bar">
+            <div class="power-gradient"></div>
+            <div class="power-marker" id="powerMarker"></div>
+        </div>
+
+        <img class="char-img" id="krzysiu" src="krzysiu.png" alt="Krzysiu">
+        <div class="char-name">Krzysiu</div>
+        <div class="health-bar"><div class="health-fill" id="hpKrzysiu"></div></div>
+    </div>
+
+    <div class="character">
+        <img class="char-img" id="justyna" src="ja.png" alt="Justyna">
+        <div class="char-name">Justyna</div>
+        <div class="health-bar"><div class="health-fill" id="hpJustyna"></div></div>
+    </div>
+</div>
+
+<script src="script.js" defer></script>
+
+</body>
+</html>
+

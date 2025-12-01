@@ -1,0 +1,129 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #cce0ff, #a2c5ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    color: #333;
+    overflow-x: hidden;
+  }
+
+  img.main-img {
+    max-width: 80%;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+  }
+
+  .counter, .progress-container, .final-text {
+    margin-bottom: 20px;
+  }
+
+  .progress-container {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .progress-bar-wrapper {
+    position: relative;
+    flex: 1;
+    height: 30px;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #ff6b81;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    transition: width 1s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .progress-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    line-height: 30px;
+    color: white;
+    pointer-events: none;
+  }
+
+  .hourglass-side {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 100px;
+    opacity: 0.7;
+    animation: sandFlow 3s infinite ease-in-out;
+  }
+
+  .hourglass-left {
+    left: 120px;
+  }
+
+  .hourglass-right {
+    right: 120px;
+  }
+
+.hourglass-mobile {
+  display: none;
+  width: 90px;
+  opacity: 0.8;
+  animation: sandFlow 3s infinite ease-in-out;
+  margin-bottom: 15px;
+}
+
+  @keyframes sandFlow {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    50% { transform: translateY(-50%) rotate(10deg); }
+    100% { transform: translateY(-50%) rotate(0deg); }
+  }
+
+  h1 {
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .hourglass-left,
+    .hourglass-right {
+     display: none;
+  }
+  
+    .hourglass-mobile {
+      display: block;
+    }
+      
+    .progress-container {
+      width: 95%;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }

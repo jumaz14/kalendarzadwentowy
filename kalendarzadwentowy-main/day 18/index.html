@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Where’s Justyna?</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="container" role="application" aria-label="Gra: znajdź Justynę na lotnisku">
+
+  <header>
+    <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#fff,#f6f8ff);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)">🕵️‍♂️</div>
+    <div>
+      <h1>Gdzie jest Justyna?</h1>
+      <p class="lead">Sprawdź swoją spostrzegawczość i wypatrz Justynę na zatłoczonym lotnisku! Kliknij w jej postać.</p>
+    </div>
+  </header>
+
+  <div class="game-area">
+
+    <div class="scene" id="scene">
+      <img src="wheres-waldo1.jpg"
+           id="bg"
+           alt="Tło lotniska"
+           style="width:100%;height:100%;object-fit:cover;border-radius:10px;pointer-events:none;position:absolute;inset:0;" />
+
+      <img src="postac.png"
+           id="targetJustyna"
+           alt="Justyna"
+           class="item" />
+    </div>
+
+    <aside class="info-panel">
+      <div class="instructions">
+        <strong>Zadanie:</strong> Znajdź Justynę na obrazku.
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="hint-btn" id="hintBtn">PODPOWIEDŹ</button>
+        <button class="reset-btn" id="resetBtn">ZRESETUJ</button>
+      </div>
+
+      <div class="meta" style="margin-top:12px;font-size:14px;">
+        Justyna jest dobrze ukryta 👀
+      </div>
+
+      <div class="result hidden" id="result">
+        Znalazłeś Justynę!<br>Teraz musisz znaleźć już tylko tą prawdziwą ❤️
+      </div>
+
+      <div class="ref-box">
+        <img src="postac.png" alt="Justyna — wzór">
+        <div class="ref-label">Justyna wygląda tak</div>
+      </div>
+    </aside>
+  </div>
+
+</div>
+<script src="script.js" defer></script>
+</body>
+</html>
+

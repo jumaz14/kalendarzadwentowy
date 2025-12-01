@@ -1,0 +1,114 @@
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    background: #dfe7ec;
+    font-family: Arial, sans-serif;
+    color: #333;
+    text-align: center;
+  }
+
+  h2, p {
+    margin: 5px 0;
+  }
+
+  #game {
+    width: 500px;
+    height: 100vh;
+    background: #4b4b4b; /* asfalt */
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    border-left: 8px solid #888;
+    border-right: 8px solid #888;
+    box-shadow: 0 0 30px rgba(0,0,0,0.4);
+  }
+
+  .lane {
+    position: absolute;
+    width: 6px;
+    height: 200%;
+    background: repeating-linear-gradient(
+      to bottom,
+      #ccc 0px,
+      #ccc 30px,
+      transparent 30px,
+      transparent 60px
+    );
+    opacity: 0.85;
+    animation: scrollLanes 0.3s linear infinite;
+  }
+
+  @keyframes scrollLanes {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(60px); }
+  }
+
+  #car {
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    bottom: 70px;
+    background-image: url('https://cdn-icons-png.flaticon.com/128/12689/12689302.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: left 0.1s;
+  }
+
+  .obstacle {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .snow { background-image: url('https://cdn-icons-png.flaticon.com/128/12583/12583603.png'); }
+  .traffic { background-image: url('https://cdn-icons-png.flaticon.com/128/11433/11433678.png'); }
+  .police { background-image: url('https://cdn-icons-png.flaticon.com/128/12668/12668865.png'); }
+
+  #score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    color: black;
+  }
+
+  #message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffcccc;
+    font-size: 30px;
+    text-shadow: 1px 1px 5px #000;
+  }
+
+  #instructions {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    z-index: 10;
+  }
+
+  #instructions p {
+    margin: 10px 0;
+  }
+
+  #instructions span {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #ff0;
+  }
