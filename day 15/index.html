@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dzień 15 - Znajdź przedmioty</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="startScreen">
+    <div id="startBox">
+        <h2>Uwaga! Wredne francuskie współlokatorki 😤</h2>
+        <p>Poukrywały rzeczy Justynie! Pomóż jej znaleźć wszystkie 5 przedmiotów, żeby mogła wrócić do Polski:</p>
+        <ul>
+            <li>Kubek</li>
+            <li>Paszport</li>
+            <li>Bluza</li>
+            <li>Notes</li>
+            <li>Skarpetki</li>
+        </ul>
+        <p class="enter">Naciśnij Enter, aby rozpocząć grę</p>
+    </div>
+</div>
+
+<div id="room">
+    <!-- Obszary mebli z przedmiotami -->
+    <div class="area" id="sofa" style="top:80%; left:36%; width:13%; height:15%; transform: rotate(0deg);" data-item="kubek" data-tooltip="Sprawdź pod kanapą"></div>
+    <div class="area" id="bed" style="top:65%; left:66%; width:25%; height:27%; transform: rotate(90deg);" data-item="paszport" data-tooltip="Sprawdź pod łóżkiem"></div>
+    <div class="area" id="bathtub" style="top:15%; left:78%; width:12%; height:10%; transform: rotate(122deg);" data-item="notes" data-tooltip="Sprawdź pod fotelem"></div>
+    <div class="area" id="drawer" style="top:0%; left:70%; width:9%; height:10%; transform: rotate(0deg);" data-item="bluza" data-tooltip="Sprawdź w szufladzie"></div>
+    <div class="area" id="wardrobe" style="top:42%; left:2%; width:16%; height:13%; transform: rotate(90deg);" data-item="skarpetki" data-tooltip="Sprawdź w wannie"></div>
+
+    <!-- Puste obszary -->
+    <div class="area" id="chair" style="top:15%; left:47%; width:5%; height:10%; transform: rotate(0deg);" data-item="" data-tooltip="Sprawdź pod krzesłem"></div>
+    <div class="area" id="desk" style="top:2%; left:45%; width:8%; height:10%; transform: rotate(0deg);" data-item="" data-tooltip="Sprawdź pod biurkiem"></div>
+    <div class="area" id="shower" style="top:75%; left:2%; width:12%; height:22%; transform: rotate(0deg);" data-item="" data-tooltip="Sprawdź pod prysznicem"></div>
+    <div class="area" id="taboret" style="top:62%; left:38%; width:9%; height:10%; transform: rotate(0deg);" data-item="" data-tooltip="Sprawdź pod taboretem"></div>
+    <div class="area" id="zlew" style="top:36%; left:18%; width:12%; height:5%; transform: rotate(90deg);" data-item="" data-tooltip="Sprawdź w zlewie"></div>
+    <div class="area" id="plant1" style="top:80%; left:51%; width:4%; height:15%; transform: rotate(0deg);" data-item="" data-tooltip="Sprawdź pod rośliną"></div>
+    <div class="area" id="plant2" style="top:2%; left:30%; width:3%; height:10%; transform: rotate(0deg);" data-item="" data-tooltip="Sprawdź pod rośliną"></div>
+
+    <div class="tooltip" id="tooltip"></div>
+</div>
+
+<div id="hud">
+    <p>Przedmioty znalezione: <span id="foundCount">0</span>/5</p>
+    <ul>
+        <li id="li-kubek">Kubek</li>
+        <li id="li-paszport">Paszport</li>
+        <li id="li-bluza">Bluza</li>
+        <li id="li-notes">Notes</li>
+        <li id="li-skarpetki">Skarpetki</li>
+    </ul>
+    <p id="timer">Czas: 0:00</p>
+</div>
+
+<div id="message">Mission accomplished 🇵🇱❤️ 1:0 🇫🇷😤</div>
+
+<script src="script.js" defer></script>
+
+</body>
+</html>
+

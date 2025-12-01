@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dzień 9 – Mini Quiz: Czy znasz Justynę?</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="quiz-container">
+  <h1>🧠 Dzień 9 – Mini Quiz: Czy znasz Justynę?</h1>
+
+  <div id="intro">
+    <p>Zgadnij, które fakty o Justynie są prawdziwe! To nie jest zwykły quiz. <br>
+    Nie chodzi o wiedzę, tylko o <strong>intuicję</strong>, bo na żadne z tych pytań nie będziesz znać odpowiedzi. Gotowy?</p>
+    <button class="start-btn" onclick="startQuiz()">Start 🎬</button>
+  </div>
+
+  <div id="quiz" class="hidden">
+    <div id="question" class="question"></div>
+    <div class="answers" id="answers"></div>
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <div id="result" class="hidden">
+    <p class="result"></p>
+    <button class="start-btn" onclick="restartQuiz()">Zagraj jeszcze raz 🔁</button>
+  </div>
+</div>
+
+<script src="script.js" defer></script>
+
+</body>
+</html>
+
+
+
