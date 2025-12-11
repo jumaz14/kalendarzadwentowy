@@ -5,13 +5,15 @@
   function createHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
+    heart.textContent = "💗";
+    heart.style.fontSize = (12 + Math.random() * 18) + "px";
     heart.style.left = Math.random() * window.innerWidth + 'px';
     heart.style.top = window.innerHeight + 'px';
     heart.style.animationDuration = (2 + Math.random() * 2) + 's';
     document.body.appendChild(heart);
     heart.addEventListener('animationend', () => heart.remove());
   }
-  setInterval(createHeart, 300);
+  setInterval(createHeart, 600);
 
   envelopeContainer.addEventListener('click', () => {
     envelope.classList.add('open');
