@@ -2,7 +2,7 @@
     margin: 0;
     height: 100vh;
     display: flex;
-    flex-direction: column; /* żeby napis był nad kopertą */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background: linear-gradient(135deg, #ffe6f0, #fff5e6);
@@ -12,7 +12,7 @@
 
   .hint {
     font-size: 1.2em;
-    color: #d36b82;
+    color: red;
     margin-bottom: 20px;
     text-align: center;
     font-weight: bold;
@@ -45,7 +45,7 @@
     height: 100%;
     background: #fff0f5;
     border: 2px solid #f08080;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     z-index: 1;
   }
@@ -53,9 +53,10 @@
   .flap {
     width: 0;
     height: 0;
-    border-left: 150px solid transparent;
+    border-radius: 5px;
+    border-left: 155px solid transparent;
     border-right: 150px solid transparent;
-    border-top: 80px solid #f08080;
+    border-top: 100px solid #f08080;
     position: absolute;
     top: 0;
     left: 0;
@@ -133,11 +134,10 @@
 
   .heart {
     position: absolute;
-    width: 50px;
-    height: 50px;
-    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 32 29.6" xmlns="http://www.w3.org/2000/svg"><path fill="red" d="M23.6,0c-2.9,0-5.6,1.5-7.6,3.9C13.9,1.5,11.2,0,8.3,0C3.7,0,0,3.7,0,8.3c0,4.6,3.7,8.3,8.3,13.1c2.9,2.7,6.1,5.4,7.6,6.9c1.5-1.5,4.7-4.2,7.6-6.9C28.3,16.6,32,12.9,32,8.3C32,3.7,28.3,0,23.6,0z"/></svg>') no-repeat center/contain;
-    opacity: 0;
-    animation: floatUp 3s linear forwards;
+    color: rgba(255, 105, 180, 0.75);
+    animation: floatUp 7s linear infinite;
+    font-size: 14px;
+    z-index: 1;
   }
 
   @keyframes floatUp {
