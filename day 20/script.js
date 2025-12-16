@@ -13,7 +13,12 @@
     document.body.appendChild(heart);
     heart.addEventListener('animationend', () => heart.remove());
   }
-  setInterval(createHeart, 1000);
+
+  function spawnHeart() {
+  createHeart();
+  setTimeout(spawnHeart, 800 + Math.random() * 1200);
+  }
+  spawnHeart();
 
   envelopeContainer.addEventListener('click', () => {
     envelope.classList.add('open');
@@ -21,3 +26,4 @@
       letter.classList.add('show');
     }, 1000);
   });
+
