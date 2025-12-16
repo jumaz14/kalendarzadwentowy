@@ -119,12 +119,11 @@
 
   .letter .main-text {
     text-align: justify;
+    line-height: 1.4;
   }
 
   .signature {
     text-align: right;
-    margin-top: 10px;
-    font-size: 1.08em;
   }
 
   .signature .name {
@@ -137,7 +136,7 @@
     color: rgba(255, 105, 180, 0.75);
     animation: floatUp 7s linear infinite;
     font-size: 14px;
-    z-index: 1;
+    z-index: -1;
   }
 
   @keyframes floatUp {
