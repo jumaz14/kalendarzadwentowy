@@ -102,6 +102,7 @@
     position:absolute;
     width:45px;
     height:auto;
+    opacity: 0.93;
     cursor:pointer;
     transform-origin:center;
     transition:transform .15s ease, box-shadow .12s ease;
@@ -136,4 +137,5 @@
   @media (max-width:920px){
     .game-area{ grid-template-columns:1fr }
     .scene{ min-height:420px }
+
   }
